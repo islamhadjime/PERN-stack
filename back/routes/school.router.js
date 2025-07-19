@@ -12,6 +12,13 @@ const upload = multer({ dest: 'uploads/' });
 import { checkFile } from '../utils/checkFile.js'
 
 
+/*
+    users:
+        Method : GET
+        URL : /api/school/users
+        Response : {message:users}
+        description : Получение информации о пользователе
+*/
 router.get('/users', checkAuth, async (req, res) => {
     try {
         const users = await User.findAll({
@@ -24,6 +31,14 @@ router.get('/users', checkAuth, async (req, res) => {
     }
 })
 
+/*
+    /:
+        Method : GET
+        URL : /api/school/
+        Response : {message:schools}
+        description : Получение информации о школах
+*/
+
 router.get('/', async (req, res) => {
     try {
         const schools = await School.findAll({
@@ -34,6 +49,14 @@ router.get('/', async (req, res) => {
         res.status(500).json({message:error.message})
     }
 })
+
+/*
+    endpoint:
+        Method : GET
+        URL : /api/school/endpoint
+        Response : {message:schools}
+        description : Получение информации о id
+*/
 router.get('/endpoint', checkAuth, async (req, res) => {
     try {
         const id = req.userId
@@ -65,6 +88,15 @@ router.get('/endpoint', checkAuth, async (req, res) => {
         res.status(500).json({message:error.message})
     }
 })
+
+/*
+    id:
+        Method : GET
+        URL : /api/school/:id
+        Response : {message:school}
+        description : Получение информации о школе
+*/
+
 router.get('/:id', checkAuth, async (req, res) => {
     try {
         const id = req.params.id
@@ -78,6 +110,16 @@ router.get('/:id', checkAuth, async (req, res) => {
         res.status(500).json({message:error.message})
     }
 })
+
+
+/*
+    static-file:
+        Method : POST
+        URL : /api/school/static-file
+        Response : {message:school}
+        description : Загрузка статических файлов
+*/
+
 router.post('/static-file', checkAuth, upload.array('pdfs', 200), uploadValidation, async (req, res) => {
     try {
 
@@ -162,7 +204,13 @@ router.post('/static-file', checkAuth, upload.array('pdfs', 200), uploadValidati
     }
 });
 
-// create school ADMIN
+/*
+    create-school:
+        Method : POST
+        URL : /api/school/create-school
+        Response : {message:school}
+        description : создание школы
+*/
 router.post('/create-school', checkAuth,checkRole, async (req, res) => {
     try {
         const {schoolName, students,idUser} = req.body
@@ -176,6 +224,14 @@ router.post('/create-school', checkAuth,checkRole, async (req, res) => {
         res.status(500).json({message:error.message})
     }
 })
+
+/*
+    delete-school:
+        Method : DELETE
+        URL : /api/school/:id
+        Response : {message:school}
+        description : удаление школы
+*/
 
 router.delete('/:id', checkAuth,checkRole, async (req, res) => {
     try{
