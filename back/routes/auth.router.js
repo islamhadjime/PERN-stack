@@ -44,7 +44,7 @@ import jwt from 'jsonwebtoken'
 */
 
 
-router.post('/register', registerValidation, async (req, res) => {
+router.post('/register', registerValidation, checkRole,async (req, res) => {
     try {
         const {name, email, password} = req.body
         const user = await User.findOne({where:{email}})
